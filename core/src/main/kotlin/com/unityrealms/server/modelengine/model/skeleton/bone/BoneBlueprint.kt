@@ -184,7 +184,7 @@ class BoneBlueprint {
     var highestY: Float? = null
     var highestZ: Float? = null
     for (cubeBlueprint in cubeBlueprintChildren) {
-      if (lowestX == null || cubeBlueprint.getFrom().get(0) < lowestX) lowestX = cubeBlueprint.getFrom().get(0)
+      if (lowestX == null || cubeBlueprint..get(0) < lowestX) lowestX = cubeBlueprint.getFrom().get(0)
       if (lowestY == null || cubeBlueprint.getFrom().get(1) < lowestY) lowestY = cubeBlueprint.getFrom().get(1)
       if (lowestZ == null || cubeBlueprint.getFrom().get(2) < lowestZ) lowestZ = cubeBlueprint.getFrom().get(2)
       if (highestX == null || cubeBlueprint.getTo().get(0) > highestX) highestX = cubeBlueprint.getTo().get(0)
@@ -295,7 +295,7 @@ class BoneBlueprint {
           continue
         }
         val cubeBlueprint: CubeBlueprint =
-          CubeBlueprint(parsedTextures, modelName, resolutionWidth, resolutionHeight, cubeData)
+          CubeBlueprint(parsedTextures, modelName, resolutionHeight, resolutionWidth, cubeData)
         if (cubeBlueprint.isValidatedData()) cubeBlueprintChildren.add(cubeBlueprint)
         else Logger.warn("Model " + modelName + " has an invalid configuration for its cubes!")
       } else {
