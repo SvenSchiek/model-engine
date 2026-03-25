@@ -1,10 +1,10 @@
-package com.unityrealms.server.modelengine.model.cube
+package com.unityrealms.server.modelengine.model.skeleton.bone.cube
 
 import com.unityrealms.server.modelengine.ModelEngine
 import com.unityrealms.server.modelengine.Version
 import com.unityrealms.server.modelengine.model.ParsedTexture
 import com.unityrealms.server.modelengine.logger.Logger
-import com.unityrealms.server.modelengine.model.cube.face.CubeFaceProcessor
+import com.unityrealms.server.modelengine.model.skeleton.bone.cube.face.CubeFaceProcessor
 import com.unityrealms.server.modelengine.model.skeleton.bone.BoneBlueprint
 
 import java.util.Locale
@@ -41,16 +41,14 @@ class CubeBlueprint(
     var remainder: Double = 0.0
   }
 
+  val to: Vector3f
+
+  var from: Vector3f
+
+  var boneOffset: Vector3f = Vector3f()
+
 
   private val cubeFaceProcessor: CubeFaceProcessor
-
-  private val boneOffset: Vector3f = Vector3f()
-
-
-  private val to: Vector3f
-
-  private var from: Vector3f
-
 
   private var validatedData = false
 
@@ -234,7 +232,7 @@ class CubeBlueprint(
     val newTo: Vector3f = Vector3f(this.to).add(inflate, inflate, inflate)
 
     if (newFrom.x > newTo.x || newFrom.y > newTo.y || newFrom.z > newTo.z) {
-      Logger.warn("Inflate on model '$this.modelName' is too negative and would invert the cube.")
+      Logger.warn("Inflate on model '${this.modelName}' is too negative and would invert the cube.")
 
       val inflationAmount = 0.0001F
 

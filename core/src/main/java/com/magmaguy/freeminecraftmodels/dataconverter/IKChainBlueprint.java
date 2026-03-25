@@ -63,7 +63,7 @@ public class IKChainBlueprint {
         this.controller = controller;
         // Set endEffectorPosition BEFORE calculateBoneLengths() since it's used there
         // Use the target bone's pivot as end effector position, fallback to origin if null
-        Vector3f pivot = targetBone.getBlueprintModelPivot();
+        Vector3f pivot = targetBone.getBoneBlueprintModelPivot();
         this.endEffectorPosition = pivot != null ? pivot : new Vector3f(0, 0, 0);
         this.boneLengths = calculateBoneLengths();
     }
@@ -88,14 +88,14 @@ public class IKChainBlueprint {
 
         // First, try to calculate lengths from pivot-to-pivot distances
         for (int i = 0; i < chainBones.size(); i++) {
-            Vector3f currentPivot = chainBones.get(i).getBlueprintModelPivot();
+            Vector3f currentPivot = chainBones.get(i).getBoneBlueprintModelPivot();
             if (currentPivot == null) {
                 currentPivot = new Vector3f(0, 0, 0);
             }
 
             Vector3f nextPivot;
             if (i < chainBones.size() - 1) {
-                nextPivot = chainBones.get(i + 1).getBlueprintModelPivot();
+                nextPivot = chainBones.get(i + 1).getBoneBlueprintModelPivot();
                 if (nextPivot == null) {
                     nextPivot = new Vector3f(0, 0, 0);
                 }
@@ -121,7 +121,7 @@ public class IKChainBlueprint {
         // The total chain length should equal the distance from root to end effector
         if (zeroLengthCount > 0) {
             // Calculate total chain length from root pivot to end effector
-            Vector3f rootPivot = chainBones.get(0).getBlueprintModelPivot();
+            Vector3f rootPivot = chainBones.get(0).getBoneBlueprintModelPivot();
             if (rootPivot == null) {
                 rootPivot = new Vector3f(0, 0, 0);
             }

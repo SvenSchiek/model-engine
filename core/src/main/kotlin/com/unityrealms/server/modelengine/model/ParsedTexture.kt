@@ -2,7 +2,7 @@ package com.unityrealms.server.modelengine.model
 
 import com.unityrealms.server.modelengine.ModelEngine
 import com.google.gson.GsonBuilder
-import com.magmaguy.freeminecraftmodels.utils.StringToResourcePackFilename
+import com.unityrealms.server.modelengine.model.resourcepack.ResourcePackConverter
 import com.unityrealms.server.modelengine.logger.Logger
 
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder
@@ -60,7 +60,7 @@ class ParsedTexture(modelName: String?, imageIndex: Int, textureMap: MutableMap<
     try {
       this.identifier = imageIndex
 
-      this.fileName = StringToResourcePackFilename.convert(textureMap["name"] as String?)
+      this.fileName = ResourcePackConverter.convert(textureMap["name"] as String?)
 
       if (!(this.fileName!!.contains(".png"))) {
         if (!(this.fileName!!.contains("."))) {

@@ -1,4 +1,4 @@
-package com.unityrealms.server.modelengine.model.cube.face
+package com.unityrealms.server.modelengine.model.skeleton.bone.cube.face
 
 import com.unityrealms.server.modelengine.logger.Logger
 import com.unityrealms.server.modelengine.model.ParsedTexture
@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
  * @param resolutionWidth The width of the texture of this model.
  * @param parsedTextureList The list of parsed textures in the model.
  * @param jsonMap The JSON map representing the cube.
- * @param round The function to process the UV coordinates.
+ * @param round The function to round floating-point numbers.
  */
 class CubeFaceProcessor(
   private val modelName: String?,
@@ -25,7 +25,9 @@ class CubeFaceProcessor(
   private val resolutionWidth: Double,
   private val parsedTextureList: MutableList<ParsedTexture>,
   private val jsonMap: MutableMap<String?, Any?>,
-  private val round: (Float) -> Float
+  private val round: (Float) -> Float = {
+    it.roundToInt().toFloat()
+  }
 ) {
 
   private var hasFaceTexture: Boolean? = null
@@ -186,7 +188,7 @@ class CubeFaceProcessor(
   private fun processFaceTexture(facesMap: MutableMap<String, Any?>?) {
     if (facesMap == null || facesMap["texture"] == null) {
       if (this.hasFaceTexture == true) {
-        Logger.warn("A cube in the model '$modelName' has a face which does not have a texture while the rest of the cube has a texture.")
+        Logger.warn("A cube in the model '${this.modelName}' has a face which does not have a texture while the rest of the cube has a texture.")
       }
 
       this.hasFaceTexture = false
@@ -195,7 +197,7 @@ class CubeFaceProcessor(
     }
 
     if (this.hasFaceTexture != null && !(this.hasFaceTexture!!)) {
-      Logger.warn("A cube in the model '$modelName' has a face which does not have a texture while the rest of the cube has a texture.")
+      Logger.warn("A cube in the model '${this.modelName}' has a face which does not have a texture while the rest of the cube has a texture.")
     }
 
     this.hasFaceTexture = true

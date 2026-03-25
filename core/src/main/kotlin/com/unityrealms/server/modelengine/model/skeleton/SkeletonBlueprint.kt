@@ -24,10 +24,10 @@ class SkeletonBlueprint(
   resolutionHeight: Double
 ) {
   //In BlockBench models are referred to by name for animations, and names are unique
-  private val boneMap: HashMap<String?, BoneBlueprint> = HashMap<String?, BoneBlueprint>()
+  val boneMap: HashMap<String?, BoneBlueprint> = HashMap<String?, BoneBlueprint>()
 
   //Map of bone UUIDs to bone blueprints (for IK chain lookup)
-  private val boneByUuidMap: HashMap<String?, BoneBlueprint?> = HashMap<String?, BoneBlueprint?>()
+  val boneByUniqueIdentifierMap: HashMap<String?, BoneBlueprint?> = HashMap<String?, BoneBlueprint?>()
 
   //Map of locator UUIDs to locator blueprints
   private val locatorMap = HashMap<String?, LocatorBlueprint?>()
@@ -55,7 +55,7 @@ class SkeletonBlueprint(
     this.modelName = modelName
 
     //Create a root bone for everything
-    val rootBone: BoneBlueprint = BoneBlueprint(modelName, null, this)
+    val rootBone: BoneBlueprint = BoneBlueprint(modelName, this, null)
     val rootChildren: MutableList<BoneBlueprint?> = ArrayList<BoneBlueprint?>()
 
     for (i in outlinerJSON.indices) {
@@ -65,17 +65,17 @@ class SkeletonBlueprint(
         HitboxBlueprint(bone, values, modelName, null)
       else {
         val boneBlueprint: BoneBlueprint = BoneBlueprint(
+          modelName,
+          this,
+          rootBone,
+          resolutionHeight,
+          resolutionWidth,
           parsedTextures,
+          textureReferences,
           bone,
           values,
           locators,
-          nullObjects,
-          textureReferences,
-          modelName,
-          rootBone,
-          this,
-          resolutionWidth,
-          resolutionHeight
+          nullObjects
         )
         rootChildren.add(boneBlueprint)
         if (boneBlueprint.getMetaBone() != null) rootChildren.add(boneBlueprint.getMetaBone())
@@ -106,7 +106,7 @@ class SkeletonBlueprint(
       }
 
       // Resolve ik_source to a bone
-      val sourceBone: BoneBlueprint? = boneByUuidMap.get(nullObj.getIkSourceUUID())
+      val sourceBone: BoneBlueprint? = boneByUniqueIdentifierMap.get(nullObj.getIkSourceUUID())
       if (sourceBone == null) {
         Logger.warn("IK chain in model " + modelName + ": Could not find source bone with UUID " + nullObj.getIkSourceUUID())
         continue
@@ -115,7 +115,7 @@ class SkeletonBlueprint(
 
       // Resolve ik_target - could be a locator or a bone
       val targetLocator = locatorMap.get(nullObj.getIkTargetUUID())
-      val targetBone: BoneBlueprint? = boneByUuidMap.get(nullObj.getIkTargetUUID())
+      val targetBone: BoneBlueprint? = boneByUniqueIdentifierMap.get(nullObj.getIkTargetUUID())
 
       if (targetLocator == null && targetBone == null) {
         Logger.warn("IK chain in model " + modelName + ": Could not find target with UUID " + nullObj.getIkTargetUUID())

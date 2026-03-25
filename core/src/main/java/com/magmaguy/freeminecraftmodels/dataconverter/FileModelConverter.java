@@ -1,7 +1,7 @@
 package com.magmaguy.freeminecraftmodels.dataconverter;
 
 import com.google.gson.Gson;
-import com.magmaguy.freeminecraftmodels.utils.StringToResourcePackFilename;
+import com.unityrealms.server.modelengine.model.resourcepack.ResourcePackConverter;
 import com.magmaguy.magmacore.util.Logger;
 import com.unityrealms.server.modelengine.model.ParsedTexture;
 import com.unityrealms.server.modelengine.model.skeleton.SkeletonBlueprint;
@@ -52,7 +52,7 @@ public class FileModelConverter {
             return;
         }
 
-        modelName = StringToResourcePackFilename.convert(modelName);
+        modelName = ResourcePackConverter.convert(modelName);
 
         Gson gson = new Gson();
 
